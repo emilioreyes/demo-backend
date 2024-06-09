@@ -9,26 +9,22 @@ import com.backend.demo.domain.UsuarioEntidad;
 import com.backend.demo.domain.Repository.UserRepositoryI;
 import com.backend.demo.persistence.Crud.UserCrudRepository;
 import com.backend.demo.persistence.entity.UserEntity;
+import com.backend.demo.persistence.mapper.UserEntityMapper;
 
 @Repository
 public class UserRepository implements UserRepositoryI {
 
     @Autowired
     private UserCrudRepository userCrudRepository;
+
+    @Autowired
+    private UserEntityMapper userEntityMapper;
+
     @Override
     public UsuarioEntidad saveUser(UsuarioEntidad usuario) {
-        UserEntity entity=new UserEntity();
-        entity.setFirstName(usuario.getNombre());
-        entity.setLastName(usuario.getApellido());
-        entity.setDocument(usuario.getDocumento());
-       
-       entity=userCrudRepository.save(entity);
-       UsuarioEntidad usuarioDominio=new UsuarioEntidad();
-       usuarioDominio.setUsuarioId(entity.getUserId());
-       usuarioDominio.setNombre(entity.getFirstName());
-       usuarioDominio.setApellido(entity.getLastName());
-       usuarioDominio.setDocumento(entity.getDocument());
-       return usuarioDominio;
+        System.out.println(usuario.toString());
+        UserEntity entity=userEntityMapper.toUserEntity(usuario);  
+        return userEntityMapper.toUsuarioEntidad(userCrudRepository.save(entity));
     }
 
     @Override
