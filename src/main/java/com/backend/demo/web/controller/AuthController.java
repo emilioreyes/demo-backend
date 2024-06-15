@@ -15,21 +15,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.demo.domain.AuthenticationRequest;
 import com.backend.demo.domain.AuthenticationResponse;
 import com.backend.demo.domain.Services.DemoUserDetailService;
+import com.backend.demo.web.security.JWTUtil;
 
 @RestController
 @RequestMapping("/login")
 public class AuthController {
-     @Autowired
+    @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
     private DemoUserDetailService demoUserDetails;
-        @PostMapping("/autentificacion")
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @PostMapping("/autentificacion")
     public ResponseEntity<AuthenticationResponse> createToken(@RequestBody AuthenticationRequest request){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsuario(),request.getClave()));
             UserDetails userDetails= demoUserDetails.loadUserByUsername(request.getUsuario());
             System.out.println(userDetails.getUsername());
-            return ResponseEntity.ok(new AuthenticationResponse("fake token",""));
+            String jwt=jwtUtil.generateToken(userDetails);
+            return ResponseEntity.ok(new AuthenticationResponse(jwt,""));
         }catch (BadCredentialsException e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

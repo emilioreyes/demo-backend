@@ -26,7 +26,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
           return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.antMatchers("/**/demo/saludar","/**/login/autentificacion").permitAll();
+                    auth.antMatchers("/**/demo/saludar","/**/login/autentificacion","/**/usuario/guardar").permitAll();
                     auth.anyRequest().authenticated();
                 }).httpBasic(Customizer.withDefaults())
                 .build();
