@@ -38,8 +38,8 @@ public class UserRepository implements UserRepositoryI {
 
     @Override
     public List<UsuarioEntidad> getAllUser() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllUser'");
+        List<UserEntity> users=userCrudRepository.findAll(); 
+        return userEntityMapper.toUsuariosEntidades(users);
     }
     
 }

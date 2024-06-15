@@ -14,21 +14,25 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.backend.demo.domain.Services.DemoUserDetailService;
+import com.backend.demo.web.controller.JwtFilterRequest;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
     private DemoUserDetailService demoUserDetailService;
+    @Autowired
+    private JwtFilterRequest filterRequest;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
           return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.antMatchers("/**/demo/saludar","/**/login/autentificacion","/**/usuario/guardar").permitAll();
                     auth.anyRequest().authenticated();
-                }).httpBasic(Customizer.withDefaults())
+                }).httpBasic(Customizer.withDefaults()).addFilterBefore(filterRequest, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
     
