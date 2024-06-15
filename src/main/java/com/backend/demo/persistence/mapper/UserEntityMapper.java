@@ -15,7 +15,8 @@ public interface UserEntityMapper {
         @Mapping(source="userId",target="usuarioId"),
         @Mapping(source="firstName",target="nombre"),
         @Mapping(source="lastName",target="apellido"),
-        @Mapping(source="document",target="documento")
+        @Mapping(source="document",target="documento"),
+        @Mapping(source="password",target="clave"),
     })
     UsuarioEntidad toUsuarioEntidad(UserEntity user);
     List<UsuarioEntidad> toUsuariosEntidades(List<UserEntity> users);

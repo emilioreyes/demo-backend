@@ -15,7 +15,9 @@ public class UserService {
     private UserRepositoryI userRepositoryI;
 
     public UsuarioEntidad save(UsuarioEntidad user){
-        return userRepositoryI.saveUser(user);
+        UsuarioEntidad usuario=userRepositoryI.saveUser(user);
+        usuario.setClave("");
+        return usuario;
     }
     
 }

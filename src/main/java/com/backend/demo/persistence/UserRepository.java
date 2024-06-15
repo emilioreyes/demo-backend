@@ -3,6 +3,7 @@ package com.backend.demo.persistence;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.backend.demo.domain.UsuarioEntidad;
@@ -23,7 +24,9 @@ public class UserRepository implements UserRepositoryI {
     @Override
     public UsuarioEntidad saveUser(UsuarioEntidad usuario) {
         System.out.println(usuario.toString());
-        UserEntity entity=userEntityMapper.toUserEntity(usuario);  
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        usuario.setClave(bCryptPasswordEncoder.encode(usuario.getClave()));
+        UserEntity entity=userEntityMapper.toUserEntity(usuario); 
         return userEntityMapper.toUsuarioEntidad(userCrudRepository.save(entity));
     }
 

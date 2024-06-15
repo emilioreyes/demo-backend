@@ -38,6 +38,8 @@ public class UserEntity {
     @NonNull
     private String document;
 
+    @NonNull
+    private String password;
     @CreationTimestamp
     @Column(name = "create_date", insertable = true, updatable = false)
     private LocalDateTime createDate;
